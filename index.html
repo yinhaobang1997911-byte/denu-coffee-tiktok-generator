@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="my">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Denu Coffee TikTok Generator</title>
+  <style>
+    @font-face {
+      font-family: "MyanmarSafe";
+      src: local("Myanmar Text"), local("Myanmar3"), local("Myanmar Unicode"), local("Noto Sans Myanmar");
+    }
+
+    :root {
+      --coffee: #24170f;
+      --cream: #fff4e4;
+      --milk: #f6dfbd;
+      --caramel: #d99a4e;
+      --berry: #c44f68;
+      --citrus: #f3b642;
+      --leaf: #3f7a55;
+      --ink: #21180f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #14100d;
+      color: var(--cream);
+      font-family: MyanmarSafe, "Myanmar Text", Arial, sans-serif;
+    }
+
+    body.export-mode {
+      width: calc(1080px * var(--export-scale, 1));
+      min-height: calc(1350px * var(--export-scale, 1));
+      display: block;
+      overflow: hidden;
+      background: #14100d;
+    }
+
+    body.export-mode .stage {
+      transform: scale(var(--export-scale, 1));
+      transform-origin: top left;
+    }
+
+    .stage {
+      width: 1080px;
+      height: 1350px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255,244,228,.22), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(196,79,104,.25), transparent 28%),
+        linear-gradient(150deg, #2b1a11 0%, #51331f 44%, #1c120d 100%);
+      isolation: isolate;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.15));
+      z-index: -2;
+    }
+
+    .stage::after {
+      content: "";
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      right: -260px;
+      bottom: -260px;
+      background:
+        radial-gradient(circle, rgba(217,154,78,.26) 0 16%, transparent 17%),
+        conic-gradient(from 20deg, rgba(255,244,228,.18), rgba(196,79,104,.2), rgba(63,122,85,.18), rgba(255,244,228,.18));
+      border-radius: 50%;
+      filter: blur(.2px);
+      opacity: .95;
+      z-index: -1;
+    }
+
+    .topbar {
+      position: absolute;
+      left: 64px;
+      right: 64px;
+      top: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      width: 252px;
+      height: auto;
+      display: block;
+    }
+
+    .day {
+      min-width: 158px;
+      padding: 16px 26px 13px;
+      border: 2px solid rgba(255,244,228,.42);
+      border-radius: 999px;
+      color: var(--cream);
+      text-align: center;
+      font: 800 31px/1 Arial, sans-serif;
+      background: rgba(36,23,15,.46);
+      backdrop-filter: blur(8px);
+    }
+
+    .content {
+      position: absolute;
+      inset: 184px 64px 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .hook-title,
+    .main-title {
+      margin: 0;
+      color: var(--cream);
+      font-weight: 900;
+      line-height: 1.24;
+      letter-spacing: 0;
+      text-wrap: balance;
+      text-shadow: 0 8px 28px rgba(0,0,0,.36);
+    }
+
+    .hook-title { font-size: 78px; max-width: 920px; }
+    .main-title { font-size: 62px; max-width: 920px; }
+
+    .hook-body,
+    .footer {
+      color: #ffe1b3;
+      font-weight: 700;
+      line-height: 1.48;
+      letter-spacing: 0;
+    }
+
+    .hook-body {
+      max-width: 790px;
+      font-size: 38px;
+    }
+
+    .visual-row {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      min-height: 390px;
+    }
+
+    .hero-cup {
+      width: 408px;
+      height: 408px;
+      position: relative;
+      flex: 0 0 408px;
+    }
+
+    .plate {
+      position: absolute;
+      inset: 66px 26px 24px;
+      border-radius: 50%;
+      background: #f6dfbd;
+      box-shadow: 0 34px 90px rgba(0,0,0,.38);
+    }
+
+    .coffee {
+      position: absolute;
+      inset: 112px 72px 72px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 38% 35%, #9f6a3c 0 7%, transparent 8%),
+        radial-gradient(circle at 58% 62%, #5b321d 0 16%, transparent 17%),
+        radial-gradient(circle, #3b2114 0 52%, #1f120d 53% 100%);
+      border: 18px solid #fff4e4;
+      box-shadow: inset 0 0 0 10px rgba(217,154,78,.22);
+    }
+
+    .fruit {
+      position: absolute;
+      border-radius: 50%;
+      box-shadow: 0 18px 36px rgba(0,0,0,.28);
+    }
+
+    .fruit.berry { width: 84px; height: 84px; left: 18px; bottom: 74px; background: var(--berry); }
+    .fruit.orange { width: 112px; height: 112px; right: 4px; top: 46px; background: var(--citrus); }
+    .fruit.leaf { width: 80px; height: 42px; right: 52px; bottom: 50px; background: var(--leaf); border-radius: 80px 8px 80px 8px; transform: rotate(-18deg); }
+
+    .tag-stack {
+      flex: 1;
+      display: grid;
+      gap: 18px;
+    }
+
+    .tag {
+      padding: 23px 27px 20px;
+      color: var(--cream);
+      background: rgba(255,244,228,.11);
+      border: 1px solid rgba(255,244,228,.24);
+      border-radius: 8px;
+      font: 800 31px/1.15 Arial, sans-serif;
+      box-shadow: 0 18px 42px rgba(0,0,0,.18);
+    }
+
+    .sections {
+      display: grid;
+      gap: 22px;
+      margin-top: 20px;
+    }
+
+    .section {
+      padding: 27px 30px 24px;
+      border-radius: 8px;
+      background: rgba(255,244,228,.94);
+      color: var(--ink);
+      box-shadow: 0 18px 55px rgba(0,0,0,.25);
+      border-left: 13px solid var(--caramel);
+    }
+
+    .section:nth-child(2) { border-left-color: var(--berry); }
+    .section:nth-child(3) { border-left-color: var(--leaf); }
+
+    .section h2 {
+      margin: 0 0 12px;
+      color: #8f4f23;
+      font: 900 35px/1.05 Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .section p {
+      margin: 0;
+      font-size: 31px;
+      font-weight: 650;
+      line-height: 1.48;
+      letter-spacing: 0;
+    }
+
+    .footer {
+      margin-top: 16px;
+      padding: 25px 30px 22px;
+      font-size: 33px;
+      background: rgba(36,23,15,.7);
+      border: 1px solid rgba(255,244,228,.24);
+      border-radius: 8px;
+    }
+
+    .audit {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      max-width: 760px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #fff;
+      color: #111;
+      font: 14px/1.4 Consolas, monospace;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    body.audit-on .audit { display: block; }
+  </style>
+</head>
+<body>
+  <main id="stage" class="stage" aria-label="TikTok coffee post"></main>
+  <pre id="audit" class="audit"></pre>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const dataFile = params.get("data") || "data/day-28.json";
+    const slideIndex = Number(params.get("slide") || 0);
+    const showAudit = params.get("audit") === "1";
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function lines(value) {
+      return escapeHtml(value || "").replace(/\n/g, "<br>");
+    }
+
+    function renderSlide(data, slide) {
+      const day = slide.eyebrow || `Day ${data.day}`;
+      const header = `
+        <div class="topbar">
+          <img class="logo" src="assets/logo.svg" alt="${escapeHtml(data.brand)}">
+          <div class="day">${escapeHtml(day)}</div>
+        </div>`;
+
+      if (slide.kind === "hook") {
+        return `${header}
+          <section class="content">
+            <div>
+              <h1 class="hook-title check-fit">${lines(slide.title)}</h1>
+              <p class="hook-body check-fit">${lines(slide.body)}</p>
+            </div>
+            <div class="visual-row">
+              <div class="hero-cup" aria-hidden="true">
+                <div class="plate"></div>
+                <div class="coffee"></div>
+                <div class="fruit berry"></div>
+                <div class="fruit orange"></div>
+                <div class="fruit leaf"></div>
+              </div>
+              <div class="tag-stack">
+                <div class="tag">No added fruit</div>
+                <div class="tag">Natural aroma</div>
+                <div class="tag">Specialty Coffee</div>
+              </div>
+            </div>
+          </section>`;
+      }
+
+      const sections = (slide.sections || []).map(section => `
+        <article class="section check-fit">
+          <h2>${escapeHtml(section.heading)}</h2>
+          <p>${lines(section.text)}</p>
+        </article>`).join("");
+
+      return `${header}
+        <section class="content">
+          <div>
+            <h1 class="main-title check-fit">${lines(slide.title)}</h1>
+            <div class="sections">${sections}</div>
+          </div>
+          <div class="footer check-fit">${lines(slide.footer)}</div>
+        </section>`;
+    }
+
+    function fitText() {
+      const nodes = [...document.querySelectorAll(".check-fit")];
+      for (const node of nodes) {
+        let size = parseFloat(getComputedStyle(node).fontSize);
+        while ((node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth) && size > 22) {
+          size -= 2;
+          node.style.fontSize = `${size}px`;
+        }
+      }
+    }
+
+    function audit(data, slide) {
+      const myanmarPattern = /[\u1000-\u109F]/;
+      const issues = [];
+      const text = document.getElementById("stage").innerText;
+      if (!text.includes(`Day ${data.day}`)) issues.push("Missing day label");
+      if (!myanmarPattern.test(text)) issues.push("No Myanmar text detected");
+      for (const node of document.querySelectorAll(".check-fit")) {
+        if (node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth) {
+          issues.push(`Text overflow: ${node.textContent.slice(0, 40)}`);
+        }
+      }
+      const font = getComputedStyle(document.body).fontFamily;
+      return {
+        ok: issues.length === 0,
+        day: data.day,
+        slide: slideIndex + 1,
+        font,
+        textLength: text.length,
+        issues
+      };
+    }
+
+    fetch(dataFile)
+      .then(response => {
+        if (!response.ok) throw new Error(`Cannot load ${dataFile}`);
+        return response.json();
+      })
+      .then(data => {
+        const slide = data.slides[slideIndex];
+        if (!slide) throw new Error(`Slide ${slideIndex} does not exist`);
+        if (params.get("export") === "1") {
+          document.body.classList.add("export-mode");
+          document.documentElement.style.setProperty("--export-scale", params.get("scale") || "1");
+        }
+        document.getElementById("stage").innerHTML = renderSlide(data, slide);
+        fitText();
+        const result = audit(data, slide);
+        window.__DENUCHECK__ = result;
+        document.getElementById("audit").textContent = JSON.stringify(result, null, 2);
+        if (showAudit) document.body.classList.add("audit-on");
+      })
+      .catch(error => {
+        document.getElementById("stage").innerHTML = `<section class="content"><h1 class="main-title">${escapeHtml(error.message)}</h1></section>`;
+        window.__DENUCHECK__ = { ok: false, issues: [error.message] };
+      });
+  </script>
+</body>
+</html>

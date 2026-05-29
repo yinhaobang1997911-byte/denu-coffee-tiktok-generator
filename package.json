@@ -1,0 +1,13 @@
+{
+  "name": "denu-coffee-tiktok-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node tools/render-api-node.mjs"
+  },
+  "dependencies": {
+    "express": "4.19.2",
+    "playwright": "1.44.1"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "brand": "NeoRoast Coffee",
+  "day": 28,
+  "topic": "Coffee မှာ Fruity Taste ဘာကြောင့် ရတာလဲ?",
+  "caption": "☕🍓 Coffee မှာ Fruity Taste ဆိုတာ ဘာလဲ?\n\nကော်ဖီထဲမှာ သစ်သီးထည့်ထားတာ မဟုတ်ပါဘူး 👀\n\nဒါပေမယ့် Specialty Coffee တချို့မှာ\n🍓 Berry note\n🍊 Citrus note\n🍑 Peach-like flavor\nလို fruity taste တွေ ရနိုင်ပါတယ်။\n\nဒီ flavor တွေက —\n✔️ Coffee Variety\n✔️ Growing Altitude\n✔️ Processing Method\n✔️ Roast Level\nတွေကြောင့် ဖြစ်လာတာပါ ☕\n\nနောက်တစ်ခါ coffee သောက်တဲ့အခါ\nခါးလားဆိုတာပဲ မစမ်းပါနဲ့။\nflavor note ကိုပါ စမ်းကြည့်ပါ 🤎\n\n#NeoRoastCoffee\n#DenuCoffee\n#SpecialtyCoffee\n#CoffeeKnowledge\n#CoffeeLover\n#FruityCoffee\n#MyanmarCoffee\n#CoffeeEducation\n#ThirdWaveCoffee\n#CoffeeCulture",
+  "slides": [
+    {
+      "kind": "hook",
+      "eyebrow": "Day 28",
+      "title": "Coffee မှာ Fruity Taste\nဘာကြောင့် ရတာလဲ?",
+      "body": "ကော်ဖီထဲမှာ သစ်သီးမပါဘူး...\nဒါပေမယ့် fruity flavor ရနိုင်ပါတယ်",
+      "visual": "coffee cup with coffee beans, strawberry, orange peel, blueberry, premium warm cafe lighting"
+    },
+    {
+      "kind": "explain",
+      "eyebrow": "Day 28",
+      "title": "Fruity Flavor က\nဘယ်ကလာတာလဲ?",
+      "sections": [
+        {
+          "heading": "Coffee Variety",
+          "text": "Arabica coffee တွေမှာ\nfruit-like aroma ပိုထွက်တတ်ပါတယ်။"
+        },
+        {
+          "heading": "High Altitude",
+          "text": "အမြင့်ပိုင်းမှာ စိုက်တဲ့ coffee bean တွေက\nacidity ပိုရှင်းပြီး fruity note ပိုပေါ်တတ်ပါတယ်။"
+        },
+        {
+          "heading": "Processing Method",
+          "text": "Natural Process က berry-like flavor ပိုထွက်တတ်ပြီး\nWashed Process က clean & citrus note ပိုထင်ရှားတတ်ပါတယ်။"
+        }
+      ],
+      "footer": "Fruity taste ဆိုတာ\ncoffee bean ရဲ့ natural flavor profile ပါ",
+      "visual": "coffee farm altitude diagram, roasted beans, citrus and berries, educational coffee infographic"
+    },
+    {
+      "kind": "summary",
+      "eyebrow": "Day 28",
+      "title": "Coffee မှာ တွေ့ရတတ်တဲ့\nFruity Notes",
+      "sections": [
+        {
+          "heading": "Berry Note",
+          "text": "strawberry, blueberry လို\nsweet & juicy aroma"
+        },
+        {
+          "heading": "Citrus Note",
+          "text": "orange, lemon လို\nbright acidity"
+        },
+        {
+          "heading": "Stone Fruit Note",
+          "text": "peach, apricot လို\nsoft & sweet flavor"
+        }
+      ],
+      "footer": "Coffee ဆိုတာ ခါးတာတစ်ခုတည်း မဟုတ်ဘူး —\nflavor ကိုပါ experience လုပ်ရတာပါ",
+      "visual": "premium specialty coffee flavor wheel with berries, orange, peach, coffee beans"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-label="NeoRoast Coffee">
+  <rect width="420" height="120" rx="18" fill="#24170f"/>
+  <circle cx="66" cy="60" r="34" fill="#d9a45f"/>
+  <path d="M52 64c18-4 18-26 34-30-4 18-1 31-19 42-5 3-12 2-15-12Z" fill="#24170f"/>
+  <text x="118" y="52" fill="#f8efe3" font-family="Arial, sans-serif" font-size="31" font-weight="700">NeoRoast</text>
+  <text x="118" y="83" fill="#d9a45f" font-family="Arial, sans-serif" font-size="22" letter-spacing="2">DENU COFFEE</text>
+</svg>

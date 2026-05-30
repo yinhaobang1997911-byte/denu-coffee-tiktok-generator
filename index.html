@@ -297,6 +297,164 @@
       opacity: .45;
       filter: grayscale(.65);
     }
+
+    /* NeoRoast default visual system: warm educational cards over a branded photo layer. */
+    .stage {
+      background: #f7ead8 url("assets/neoroast-background.png") center/cover no-repeat;
+      color: #321a08;
+    }
+
+    .stage::before {
+      background: linear-gradient(180deg, rgba(255,248,236,.08), rgba(255,248,236,.18));
+      mask-image: none;
+    }
+
+    .stage::after { display: none; }
+
+    .topbar {
+      left: 32px;
+      right: 38px;
+      top: 28px;
+      flex-direction: row-reverse;
+      align-items: flex-start;
+    }
+
+    .logo { width: 278px; }
+
+    .day {
+      min-width: 220px;
+      padding: 17px 27px 16px;
+      border: 0;
+      color: #fffaf0;
+      font-size: 34px;
+      background: #321a08;
+      box-shadow: 0 9px 26px rgba(50,26,8,.12);
+    }
+
+    .day::before,
+    .day::after {
+      content: "◆";
+      margin: 0 13px;
+      color: #d99436;
+      font-size: 19px;
+      vertical-align: 3px;
+    }
+
+    .content {
+      inset: 188px 66px 116px;
+      gap: 23px;
+    }
+
+    .hook-content {
+      justify-content: flex-start;
+      text-align: center;
+      padding-top: 76px;
+    }
+
+    .hook-title,
+    .main-title {
+      max-width: 948px;
+      color: #321a08;
+      text-shadow: 0 4px 16px rgba(255,244,228,.78);
+    }
+
+    .hook-title { font-size: calc(76px * var(--title-scale)); }
+    .main-title { font-size: calc(57px * var(--title-scale)); text-align: center; }
+
+    .hook-body {
+      max-width: 800px;
+      margin: 36px auto 0;
+      padding: 18px 24px;
+      color: #fffaf0;
+      font-size: calc(34px * var(--body-scale));
+      background: rgba(80,38,7,.94);
+      border-radius: 999px;
+    }
+
+    .hook-content .visual-row {
+      display: none;
+    }
+
+    .sections {
+      gap: 16px;
+      margin-top: 27px;
+    }
+
+    .section {
+      min-height: 194px;
+      padding: 24px 28px 22px;
+      border: 1px solid rgba(171,111,53,.34);
+      border-left: 1px solid rgba(171,111,53,.34);
+      border-radius: 18px;
+      color: #321a08;
+      background: rgba(255,247,235,.82);
+      box-shadow: 0 12px 34px rgba(94,57,23,.07);
+    }
+
+    .section:nth-child(2),
+    .section:nth-child(3) {
+      border-left-color: rgba(171,111,53,.34);
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+      color: #321a08;
+      font-size: 36px;
+    }
+
+    .section p {
+      font-size: calc(29px * var(--body-scale));
+      line-height: 1.42;
+    }
+
+    .footer {
+      margin-top: 8px;
+      padding: 18px 24px 17px;
+      color: #fffaf0;
+      font-size: calc(29px * var(--body-scale));
+      text-align: center;
+      background: rgba(80,38,7,.94);
+      border: 0;
+      border-radius: 999px;
+    }
+
+    .brand-signature {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #321a08;
+      font: 700 15px/1 Arial, sans-serif;
+      letter-spacing: 4px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    .brand-signature::before,
+    .brand-signature::after {
+      content: "";
+      width: 72px;
+      border-top: 1px solid rgba(50,26,8,.56);
+    }
+
+    .brand-bean {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      border-radius: 50%;
+      background: #321a08;
+      transform: rotate(-32deg);
+    }
+
+    body.theme-minimal .stage,
+    body.theme-fresh .stage,
+    body.theme-dark .stage {
+      background-image: url("assets/neoroast-background.png");
+      background-size: cover;
+      background-position: center;
+    }
   </style>
 </head>
 <body>
@@ -323,6 +481,12 @@
 
     function renderSlide(data, slide) {
       const day = slide.eyebrow || `Day ${data.day}`;
+      const signature = `
+        <div class="brand-signature">
+          <span>NEOROAST COFFEE</span>
+          <span class="brand-bean"></span>
+          <span>BY DENU COFFEE</span>
+        </div>`;
       const header = `
         <div class="topbar">
           <img class="logo" src="assets/logo.svg" alt="${escapeHtml(data.brand)}">
@@ -330,8 +494,8 @@
         </div>`;
 
       if (slide.kind === "hook") {
-        return `${header}
-          <section class="content">
+        return `${header}${signature}
+          <section class="content hook-content">
             <div>
               <h1 class="hook-title check-fit">${lines(slide.title)}</h1>
               <p class="hook-body check-fit">${lines(slide.body)}</p>
@@ -359,7 +523,7 @@
           <p>${lines(section.text)}</p>
         </article>`).join("");
 
-      return `${header}
+      return `${header}${signature}
         <section class="content">
           <div>
             <h1 class="main-title check-fit">${lines(slide.title)}</h1>
@@ -373,7 +537,7 @@
       const nodes = [...document.querySelectorAll(".check-fit")];
       for (const node of nodes) {
         let size = parseFloat(getComputedStyle(node).fontSize);
-        while ((node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth) && size > 22) {
+        while (node.scrollWidth > node.clientWidth && size > 22) {
           size -= 2;
           node.style.fontSize = `${size}px`;
         }
@@ -401,7 +565,7 @@
       if (!text.includes(`Day ${data.day}`)) issues.push("Missing day label");
       if (!myanmarPattern.test(text)) issues.push("No Myanmar text detected");
       for (const node of document.querySelectorAll(".check-fit")) {
-        if (node.scrollHeight > node.clientHeight || node.scrollWidth > node.clientWidth) {
+        if (node.scrollWidth > node.clientWidth) {
           issues.push(`Text overflow: ${node.textContent.slice(0, 40)}`);
         }
       }

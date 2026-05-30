@@ -21,6 +21,54 @@ function hasMyanmarText(value) {
   return /[\u1000-\u109F]/.test(JSON.stringify(value));
 }
 
+const allowedThemes = new Set(["warm", "minimal", "fresh", "dark"]);
+const allowedFonts = new Set(["myanmar-text", "noto-sans-myanmar", "myanmar3"]);
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function normalizeDesign(design = {}) {
+  return {
+    theme: allowedThemes.has(design.theme) ? design.theme : "warm",
+    font: allowedFonts.has(design.font) ? design.font : "myanmar-text",
+    titleScale: clamp(Number(design.titleScale) || 1, 0.78, 1.2),
+    bodyScale: clamp(Number(design.bodyScale) || 1, 0.78, 1.2)
+  };
+}
+
+function parseDesignInstruction(instruction = "", previousDesign = {}) {
+  const design = normalizeDesign(previousDesign);
+  const text = String(instruction).toLowerCase();
+
+  if (/简约|极简|minimal/.test(text)) design.theme = "minimal";
+  if (/清新|自然|绿色|fresh|green/.test(text)) design.theme = "fresh";
+  if (/深色|高级|暗色|dark|premium/.test(text)) design.theme = "dark";
+  if (/温暖|咖啡色|原来|warm|classic/.test(text)) design.theme = "warm";
+
+  if (/noto/.test(text)) design.font = "noto-sans-myanmar";
+  if (/myanmar3/.test(text)) design.font = "myanmar3";
+  if (/myanmar text|默认字体|原来字体/.test(text)) design.font = "myanmar-text";
+
+  if (/标题.{0,6}(大一点|放大|加大)|title.{0,6}(larger|bigger)/.test(text)) {
+    design.titleScale = clamp(design.titleScale + 0.08, 0.78, 1.2);
+  }
+  if (/标题.{0,6}(小一点|缩小)|title.{0,6}smaller/.test(text)) {
+    design.titleScale = clamp(design.titleScale - 0.08, 0.78, 1.2);
+  }
+  if (/(正文|字体).{0,6}(大一点|放大|加大)|body.{0,6}(larger|bigger)/.test(text)) {
+    design.bodyScale = clamp(design.bodyScale + 0.08, 0.78, 1.2);
+  }
+  if (/(正文|字体).{0,6}(小一点|缩小)|body.{0,6}smaller/.test(text)) {
+    design.bodyScale = clamp(design.bodyScale - 0.08, 0.78, 1.2);
+  }
+  if (/重置|恢复默认|reset/.test(text)) {
+    return normalizeDesign();
+  }
+
+  return design;
+}
+
 function validateDailyData(data) {
   const issues = [];
 
@@ -44,11 +92,12 @@ function validateDailyData(data) {
   return issues;
 }
 
-async function renderDailyData(data) {
+async function renderDailyData(data, publicBaseUrl) {
   await mkdir(dataDir, { recursive: true });
   await mkdir(outputDir, { recursive: true });
 
   const day = data.day;
+  data.design = normalizeDesign(data.design);
   const dataFileName = `day-${day}.json`;
   const dataFile = path.join(dataDir, dataFileName);
   const dayOutputDir = path.join(outputDir, `day-${day}`);
@@ -87,6 +136,7 @@ async function renderDailyData(data) {
         slide: index + 1,
         fileName,
         mimeType: "image/png",
+        url: `${publicBaseUrl}/output/day-${day}/${fileName}`,
         base64: buffer.toString("base64"),
         check
       });
@@ -115,8 +165,34 @@ app.post("/render", async (req, res) => {
       return;
     }
 
-    const result = await renderDailyData(req.body);
+    const publicBaseUrl = `${req.protocol}://${req.get("host")}`;
+    const result = await renderDailyData(req.body, publicBaseUrl);
     res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+});
+
+app.post("/rerender", async (req, res) => {
+  try {
+    const day = Number(req.body?.day);
+    if (!Number.isInteger(day)) {
+      res.status(400).json({ ok: false, issues: ["day must be a number"] });
+      return;
+    }
+
+    const raw = await readFile(path.join(dataDir, `day-${day}.json`), "utf8");
+    const data = JSON.parse(raw);
+    data.design = req.body?.design
+      ? normalizeDesign({ ...data.design, ...req.body.design })
+      : parseDesignInstruction(req.body?.instruction, data.design);
+
+    const publicBaseUrl = `${req.protocol}://${req.get("host")}`;
+    const result = await renderDailyData(data, publicBaseUrl);
+    res.json({ ...result, design: data.design });
   } catch (error) {
     res.status(500).json({
       ok: false,

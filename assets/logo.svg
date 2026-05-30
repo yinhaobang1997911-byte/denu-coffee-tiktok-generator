@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-label="NeoRoast Coffee">
-  <rect width="420" height="120" rx="18" fill="#24170f"/>
-  <circle cx="66" cy="60" r="34" fill="#d9a45f"/>
-  <path d="M52 64c18-4 18-26 34-30-4 18-1 31-19 42-5 3-12 2-15-12Z" fill="#24170f"/>
-  <text x="118" y="52" fill="#f8efe3" font-family="Arial, sans-serif" font-size="31" font-weight="700">NeoRoast</text>
-  <text x="118" y="83" fill="#d9a45f" font-family="Arial, sans-serif" font-size="22" letter-spacing="2">DENU COFFEE</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 132" role="img" aria-label="NeoRoast Coffee by Denu Coffee">
+  <circle cx="58" cy="52" r="34" fill="#321a08"/>
+  <path d="M35 61c8-27 35-36 48-32-5 20-17 43-45 48-7-2-9-9-3-16Z" fill="#f8eddd"/>
+  <path d="M38 72c15-10 28-23 43-40" fill="none" stroke="#321a08" stroke-width="5" stroke-linecap="round"/>
+  <text x="111" y="52" fill="#321a08" font-family="Georgia, serif" font-size="36" letter-spacing="1">NEOROAST</text>
+  <text x="151" y="91" fill="#321a08" font-family="Georgia, serif" font-size="36" letter-spacing="1">COFFEE</text>
+  <text x="150" y="122" fill="#321a08" font-family="Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="5">BY DENU COFFEE</text>
 </svg>

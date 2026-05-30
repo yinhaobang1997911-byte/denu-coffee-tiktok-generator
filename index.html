@@ -19,6 +19,9 @@
       --citrus: #f3b642;
       --leaf: #3f7a55;
       --ink: #21180f;
+      --title-scale: 1;
+      --body-scale: 1;
+      --myanmar-font: MyanmarSafe, "Myanmar Text", Arial, sans-serif;
     }
 
     * { box-sizing: border-box; }
@@ -30,7 +33,7 @@
       place-items: center;
       background: #14100d;
       color: var(--cream);
-      font-family: MyanmarSafe, "Myanmar Text", Arial, sans-serif;
+      font-family: var(--myanmar-font);
     }
 
     body.export-mode {
@@ -135,8 +138,8 @@
       text-shadow: 0 8px 28px rgba(0,0,0,.36);
     }
 
-    .hook-title { font-size: 78px; max-width: 920px; }
-    .main-title { font-size: 62px; max-width: 920px; }
+    .hook-title { font-size: calc(78px * var(--title-scale)); max-width: 920px; }
+    .main-title { font-size: calc(62px * var(--title-scale)); max-width: 920px; }
 
     .hook-body,
     .footer {
@@ -148,7 +151,7 @@
 
     .hook-body {
       max-width: 790px;
-      font-size: 38px;
+      font-size: calc(38px * var(--body-scale));
     }
 
     .visual-row {
@@ -238,7 +241,7 @@
 
     .section p {
       margin: 0;
-      font-size: 31px;
+      font-size: calc(31px * var(--body-scale));
       font-weight: 650;
       line-height: 1.48;
       letter-spacing: 0;
@@ -247,7 +250,7 @@
     .footer {
       margin-top: 16px;
       padding: 25px 30px 22px;
-      font-size: 33px;
+      font-size: calc(33px * var(--body-scale));
       background: rgba(36,23,15,.7);
       border: 1px solid rgba(255,244,228,.24);
       border-radius: 8px;
@@ -268,6 +271,32 @@
     }
 
     body.audit-on .audit { display: block; }
+
+    body.theme-minimal .stage {
+      background: linear-gradient(145deg, #25313a 0%, #45525a 100%);
+    }
+
+    body.theme-minimal .stage::after {
+      opacity: .3;
+      filter: grayscale(1);
+    }
+
+    body.theme-fresh .stage {
+      background: linear-gradient(145deg, #18382d 0%, #3f7a55 55%, #172a23 100%);
+    }
+
+    body.theme-fresh .stage::after {
+      opacity: .62;
+    }
+
+    body.theme-dark .stage {
+      background: linear-gradient(145deg, #101010 0%, #2b211d 55%, #090909 100%);
+    }
+
+    body.theme-dark .stage::after {
+      opacity: .45;
+      filter: grayscale(.65);
+    }
   </style>
 </head>
 <body>
@@ -351,6 +380,20 @@
       }
     }
 
+    function applyDesign(design = {}) {
+      const root = document.documentElement;
+      const fontMap = {
+        "myanmar-text": '"Myanmar Text", MyanmarSafe, Arial, sans-serif',
+        "noto-sans-myanmar": '"Noto Sans Myanmar", MyanmarSafe, Arial, sans-serif',
+        "myanmar3": 'Myanmar3, MyanmarSafe, Arial, sans-serif'
+      };
+
+      root.style.setProperty("--title-scale", Number(design.titleScale) || 1);
+      root.style.setProperty("--body-scale", Number(design.bodyScale) || 1);
+      root.style.setProperty("--myanmar-font", fontMap[design.font] || fontMap["myanmar-text"]);
+      document.body.classList.add(`theme-${design.theme || "warm"}`);
+    }
+
     function audit(data, slide) {
       const myanmarPattern = /[\u1000-\u109F]/;
       const issues = [];
@@ -381,6 +424,7 @@
       .then(data => {
         const slide = data.slides[slideIndex];
         if (!slide) throw new Error(`Slide ${slideIndex} does not exist`);
+        applyDesign(data.design);
         if (params.get("export") === "1") {
           document.body.classList.add("export-mode");
           document.documentElement.style.setProperty("--export-scale", params.get("scale") || "1");

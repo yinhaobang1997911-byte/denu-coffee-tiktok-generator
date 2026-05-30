@@ -97,6 +97,7 @@ async function renderDailyData(data, publicBaseUrl) {
   await mkdir(outputDir, { recursive: true });
 
   const day = data.day;
+  const renderVersion = Date.now();
   data.design = normalizeDesign(data.design);
   const dataFileName = `day-${day}.json`;
   const dataFile = path.join(dataDir, dataFileName);
@@ -136,7 +137,7 @@ async function renderDailyData(data, publicBaseUrl) {
         slide: index + 1,
         fileName,
         mimeType: "image/png",
-        url: `${publicBaseUrl}/output/day-${day}/${fileName}`,
+        url: `${publicBaseUrl}/output/day-${day}/${fileName}?v=${renderVersion}`,
         base64: buffer.toString("base64"),
         check
       });

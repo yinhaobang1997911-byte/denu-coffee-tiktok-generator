@@ -448,6 +448,132 @@
       transform: rotate(-32deg);
     }
 
+    .topic-visual {
+      width: min(760px, 100%);
+      min-height: 236px;
+      margin: 34px auto 0;
+      display: grid;
+      grid-template-columns: 218px 1fr;
+      align-items: center;
+      gap: 26px;
+      padding: 22px 28px;
+      border: 1px solid rgba(171,111,53,.28);
+      border-radius: 22px;
+      background: rgba(255,247,235,.76);
+      box-shadow: 0 14px 40px rgba(94,57,23,.08);
+    }
+
+    .topic-orb {
+      width: 176px;
+      height: 176px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff8ea;
+      font: 700 92px/1 Arial, sans-serif;
+      background: var(--scene-accent, #6e3b16);
+      box-shadow: inset 0 0 0 12px rgba(255,248,234,.12);
+    }
+
+    .topic-copy {
+      color: #321a08;
+      text-align: left;
+    }
+
+    .topic-label {
+      margin: 0 0 12px;
+      color: var(--scene-accent, #6e3b16);
+      font: 900 35px/1.1 Arial, sans-serif;
+    }
+
+    .topic-note {
+      margin: 0;
+      font: 700 25px/1.4 Arial, sans-serif;
+    }
+
+    .section-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .section-grid .section {
+      min-height: 370px;
+      padding: 23px 20px;
+    }
+
+    .section-grid .section h2 { font-size: 30px; }
+    .section-grid .section p { font-size: calc(26px * var(--body-scale)); }
+
+    .section-timeline .section {
+      margin-left: 42px;
+      position: relative;
+    }
+
+    .section-timeline .section::before {
+      content: attr(data-step);
+      position: absolute;
+      left: -62px;
+      top: 50%;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff8ea;
+      font: 900 23px/1 Arial, sans-serif;
+      background: var(--scene-accent, #6e3b16);
+      transform: translateY(-50%);
+    }
+
+    .section-accent .section:nth-child(1) { background: rgba(255,239,220,.88); }
+    .section-accent .section:nth-child(2) { background: rgba(247,244,215,.88); }
+    .section-accent .section:nth-child(3) { background: rgba(236,246,226,.88); }
+
+    .scene-fruit { --scene-accent: #963c4a; }
+    .scene-citrus { --scene-accent: #c97700; }
+    .scene-aroma { --scene-accent: #466321; }
+    .scene-brew { --scene-accent: #92561c; }
+    .scene-roast { --scene-accent: #5a2d14; }
+    .scene-process { --scene-accent: #5f6d32; }
+    .scene-origin { --scene-accent: #3f6b4a; }
+
+    .scene-fruit .hook-body,
+    .scene-citrus .hook-body,
+    .scene-aroma .hook-body,
+    .scene-brew .hook-body,
+    .scene-roast .hook-body,
+    .scene-process .hook-body,
+    .scene-origin .hook-body,
+    .scene-fruit .footer,
+    .scene-citrus .footer,
+    .scene-aroma .footer,
+    .scene-brew .footer,
+    .scene-roast .footer,
+    .scene-process .footer,
+    .scene-origin .footer {
+      background: color-mix(in srgb, var(--scene-accent) 84%, #321a08);
+    }
+
+    .scene-fruit .stage-art,
+    .scene-citrus .stage-art,
+    .scene-aroma .stage-art,
+    .scene-brew .stage-art,
+    .scene-roast .stage-art,
+    .scene-process .stage-art,
+    .scene-origin .stage-art {
+      display: block;
+    }
+
+    .stage-art {
+      position: absolute;
+      right: 74px;
+      bottom: 176px;
+      display: none;
+      color: var(--scene-accent);
+      font: 700 84px/1 Arial, sans-serif;
+      opacity: .15;
+    }
+
     body.theme-minimal .stage,
     body.theme-fresh .stage,
     body.theme-dark .stage {
@@ -479,14 +605,61 @@
       return escapeHtml(value || "").replace(/\n/g, "<br>");
     }
 
+    function getScene(slide) {
+      const text = `${slide.visual || ""} ${slide.title || ""} ${(slide.sections || []).map(item => `${item.heading} ${item.text}`).join(" ")}`.toLowerCase();
+      if (/berry|fruit|peach|orange|lemon|citrus|mango|pineapple/.test(text)) return "fruit";
+      if (/aroma|smell|fragrance/.test(text)) return "aroma";
+      if (/brew|drip|espresso|cold brew|v60|pour over/.test(text)) return "brew";
+      if (/roast|roasting/.test(text)) return "roast";
+      if (/process|washed|natural|honey|ferment/.test(text)) return "process";
+      if (/farm|altitude|origin|ethiopia|colombia|myanmar/.test(text)) return "origin";
+      return "coffee";
+    }
+
+    function getLayout(slide, scene) {
+      if (slide.kind === "hook") return "feature";
+      if (slide.kind === "summary" || scene === "fruit") return "grid";
+      if (scene === "process" || scene === "origin") return "timeline";
+      return "accent";
+    }
+
+    function getSceneMeta(scene) {
+      return {
+        fruit: ["🍓", "Flavor Notes", "Berry · Citrus · Tropical"],
+        citrus: ["🍊", "Bright Acidity", "Citrus · Clean · Fresh"],
+        aroma: ["☕", "Aroma", "Fragrance · Steam · Experience"],
+        brew: ["♨", "Brewing", "Water · Time · Extraction"],
+        roast: ["◒", "Roasting", "Light · Medium · Dark"],
+        process: ["✦", "Processing", "Natural · Washed · Honey"],
+        origin: ["⌂", "Origin", "Farm · Altitude · Terroir"],
+        coffee: ["☕", "Coffee Knowledge", "Learn · Taste · Enjoy"]
+      }[scene];
+    }
+
+    function renderTopicVisual(scene) {
+      const [icon, label, note] = getSceneMeta(scene);
+      return `
+        <div class="topic-visual" aria-hidden="true">
+          <div class="topic-orb">${icon}</div>
+          <div class="topic-copy">
+            <p class="topic-label">${label}</p>
+            <p class="topic-note">${note}</p>
+          </div>
+        </div>`;
+    }
+
     function renderSlide(data, slide) {
       const day = slide.eyebrow || `Day ${data.day}`;
+      const scene = getScene(slide);
+      const layout = getLayout(slide, scene);
+      document.getElementById("stage").className = `stage scene-${scene} layout-${layout}`;
       const signature = `
         <div class="brand-signature">
           <span>NEOROAST COFFEE</span>
           <span class="brand-bean"></span>
           <span>BY DENU COFFEE</span>
-        </div>`;
+        </div>
+        <div class="stage-art" aria-hidden="true">${getSceneMeta(scene)[0]}</div>`;
       const header = `
         <div class="topbar">
           <img class="logo" src="assets/logo.svg" alt="${escapeHtml(data.brand)}">
@@ -500,25 +673,12 @@
               <h1 class="hook-title check-fit">${lines(slide.title)}</h1>
               <p class="hook-body check-fit">${lines(slide.body)}</p>
             </div>
-            <div class="visual-row">
-              <div class="hero-cup" aria-hidden="true">
-                <div class="plate"></div>
-                <div class="coffee"></div>
-                <div class="fruit berry"></div>
-                <div class="fruit orange"></div>
-                <div class="fruit leaf"></div>
-              </div>
-              <div class="tag-stack">
-                <div class="tag">No added fruit</div>
-                <div class="tag">Natural aroma</div>
-                <div class="tag">Specialty Coffee</div>
-              </div>
-            </div>
+            ${renderTopicVisual(scene)}
           </section>`;
       }
 
-      const sections = (slide.sections || []).map(section => `
-        <article class="section check-fit">
+      const sections = (slide.sections || []).map((section, index) => `
+        <article class="section check-fit" data-step="${index + 1}">
           <h2>${escapeHtml(section.heading)}</h2>
           <p>${lines(section.text)}</p>
         </article>`).join("");
@@ -527,7 +687,7 @@
         <section class="content">
           <div>
             <h1 class="main-title check-fit">${lines(slide.title)}</h1>
-            <div class="sections">${sections}</div>
+            <div class="sections section-${layout}">${sections}</div>
           </div>
           <div class="footer check-fit">${lines(slide.footer)}</div>
         </section>`;

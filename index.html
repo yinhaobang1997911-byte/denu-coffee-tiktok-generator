@@ -398,6 +398,7 @@
 
     .section h2 {
       margin-bottom: 10px;
+      padding-right: 66px;
       color: #321a08;
       font-size: 36px;
     }
@@ -475,6 +476,252 @@
       box-shadow: inset 0 0 0 12px rgba(255,248,234,.12);
     }
 
+    .scene-artwork {
+      position: relative;
+      width: 176px;
+      height: 176px;
+      overflow: hidden;
+      border-radius: 50%;
+      background: var(--scene-accent, #6e3b16);
+      box-shadow: inset 0 0 0 12px rgba(255,248,234,.12);
+    }
+
+    .scene-artwork span {
+      position: absolute;
+      display: block;
+    }
+
+    .art-cup {
+      left: 43px;
+      bottom: 38px;
+      width: 82px;
+      height: 50px;
+      border: 7px solid #fff3dc;
+      border-top: 0;
+      border-radius: 0 0 34px 34px;
+    }
+
+    .art-cup::after {
+      content: "";
+      position: absolute;
+      right: -31px;
+      top: 5px;
+      width: 27px;
+      height: 25px;
+      border: 7px solid #fff3dc;
+      border-left: 0;
+      border-radius: 0 22px 22px 0;
+    }
+
+    .art-steam {
+      bottom: 97px;
+      width: 18px;
+      height: 50px;
+      border-left: 5px solid #fff3dc;
+      border-radius: 50%;
+      opacity: .88;
+      animation: steamRise 2.8s ease-in-out infinite;
+    }
+
+    .art-steam.s1 { left: 60px; }
+    .art-steam.s2 { left: 83px; height: 61px; animation-delay: .5s; }
+    .art-steam.s3 { left: 106px; animation-delay: 1s; }
+
+    .art-bean {
+      width: 25px;
+      height: 18px;
+      border-radius: 50%;
+      background: #d08a3e;
+      transform: rotate(-24deg);
+      box-shadow: inset -5px -2px 0 rgba(83,39,12,.24);
+      animation: beanFloat 3s ease-in-out infinite;
+    }
+
+    .art-bean::after {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 1px;
+      height: 16px;
+      border-left: 2px solid rgba(83,39,12,.56);
+      transform: rotate(18deg);
+    }
+
+    .art-leaf {
+      width: 49px;
+      height: 28px;
+      border-radius: 80% 0 80% 0;
+      background: #88a947;
+      transform: rotate(-28deg);
+      box-shadow: inset -5px -3px 0 rgba(42,76,29,.2);
+    }
+
+    .art-spark {
+      color: #fff1b6;
+      font: 900 34px/1 Arial, sans-serif;
+      animation: sparkle 2.1s ease-in-out infinite;
+    }
+
+    .art-drum {
+      left: 45px;
+      top: 51px;
+      width: 88px;
+      height: 69px;
+      border: 7px solid #fff3dc;
+      border-radius: 24px;
+      background: rgba(255,243,220,.16);
+    }
+
+    .art-drum::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 23px;
+      width: 49px;
+      border-top: 7px solid #fff3dc;
+    }
+
+    .art-drum::after {
+      content: "";
+      position: absolute;
+      left: 35px;
+      top: 3px;
+      height: 56px;
+      border-left: 7px solid #fff3dc;
+    }
+
+    .art-flame {
+      bottom: 24px;
+      width: 24px;
+      height: 41px;
+      border-radius: 70% 20% 70% 30%;
+      background: #f7b340;
+      transform: rotate(45deg);
+      animation: flame 1.5s ease-in-out infinite;
+    }
+
+    .art-flame.f1 { left: 55px; }
+    .art-flame.f2 { left: 82px; height: 50px; animation-delay: .35s; }
+    .art-flame.f3 { left: 108px; animation-delay: .7s; }
+
+    .art-dripper {
+      left: 53px;
+      top: 52px;
+      width: 72px;
+      height: 58px;
+      border: 7px solid #fff3dc;
+      border-top-width: 12px;
+      clip-path: polygon(0 0,100% 0,76% 100%,24% 100%);
+      background: rgba(255,243,220,.16);
+    }
+
+    .art-drop {
+      left: 82px;
+      top: 118px;
+      width: 15px;
+      height: 22px;
+      border-radius: 60% 60% 70% 70%;
+      background: #a9d8ef;
+      animation: drip 1.6s ease-in infinite;
+    }
+
+    .art-jar {
+      left: 52px;
+      top: 45px;
+      width: 73px;
+      height: 90px;
+      border: 7px solid #fff3dc;
+      border-radius: 10px 10px 20px 20px;
+      background: rgba(255,243,220,.14);
+    }
+
+    .art-jar::before {
+      content: "";
+      position: absolute;
+      left: -2px;
+      top: -17px;
+      width: 63px;
+      border-top: 11px solid #fff3dc;
+      border-radius: 5px;
+    }
+
+    .art-cherry {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      background: #c94734;
+      box-shadow: inset -5px -4px 0 rgba(100,32,25,.2);
+      animation: beanFloat 2.8s ease-in-out infinite;
+    }
+
+    .art-medal {
+      left: 52px;
+      top: 38px;
+      width: 73px;
+      height: 73px;
+      display: grid !important;
+      place-items: center;
+      border: 7px solid #fff3dc;
+      border-radius: 50%;
+      color: #fff3dc;
+      font: 900 41px/1 Arial, sans-serif;
+    }
+
+    .art-medal::before,
+    .art-medal::after {
+      content: "";
+      position: absolute;
+      bottom: -44px;
+      width: 26px;
+      height: 51px;
+      background: #fff3dc;
+      clip-path: polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);
+    }
+
+    .art-medal::before { left: 4px; }
+    .art-medal::after { right: 4px; }
+
+    .mini-visual {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      display: grid;
+      width: 54px;
+      height: 54px;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff8ea;
+      font: 700 29px/1 Arial, sans-serif;
+      background: var(--scene-accent, #6e3b16);
+      box-shadow: 0 7px 18px rgba(76,43,16,.15);
+    }
+
+    @keyframes steamRise {
+      0%, 100% { opacity: .42; transform: translateY(6px) scale(.92); }
+      50% { opacity: 1; transform: translateY(-7px) scale(1.08); }
+    }
+
+    @keyframes beanFloat {
+      0%, 100% { transform: translateY(0) rotate(-24deg); }
+      50% { transform: translateY(-7px) rotate(-11deg); }
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: .45; transform: scale(.82); }
+      50% { opacity: 1; transform: scale(1.18); }
+    }
+
+    @keyframes flame {
+      0%, 100% { transform: rotate(45deg) scale(.86); }
+      50% { transform: rotate(45deg) scale(1.12); }
+    }
+
+    @keyframes drip {
+      0% { opacity: 0; transform: translateY(-8px); }
+      25% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(24px); }
+    }
+
     .topic-copy {
       color: #321a08;
       text-align: left;
@@ -536,6 +783,8 @@
     .scene-roast { --scene-accent: #5a2d14; }
     .scene-process { --scene-accent: #5f6d32; }
     .scene-origin { --scene-accent: #3f6b4a; }
+    .scene-greenbean { --scene-accent: #5f7a37; }
+    .scene-specialty { --scene-accent: #9a5e08; }
 
     .scene-fruit .hook-body,
     .scene-citrus .hook-body,
@@ -560,7 +809,9 @@
     .scene-brew .stage-art,
     .scene-roast .stage-art,
     .scene-process .stage-art,
-    .scene-origin .stage-art {
+    .scene-origin .stage-art,
+    .scene-greenbean .stage-art,
+    .scene-specialty .stage-art {
       display: block;
     }
 
@@ -612,6 +863,8 @@
       if (/brew|drip|espresso|cold brew|v60|pour over/.test(text)) return "brew";
       if (/roast|roasting/.test(text)) return "roast";
       if (/process|washed|natural|honey|ferment/.test(text)) return "process";
+      if (/green bean|raw bean|bean quality|sorting|grading/.test(text)) return "greenbean";
+      if (/specialty|quality score|cupping score|sourcing/.test(text)) return "specialty";
       if (/farm|altitude|origin|ethiopia|colombia|myanmar/.test(text)) return "origin";
       return "coffee";
     }
@@ -632,15 +885,32 @@
         roast: ["◒", "Roasting", "Light · Medium · Dark"],
         process: ["✦", "Processing", "Natural · Washed · Honey"],
         origin: ["⌂", "Origin", "Farm · Altitude · Terroir"],
+        greenbean: ["◆", "Green Bean Quality", "Selection · Sorting · Potential"],
+        specialty: ["★", "Specialty Coffee", "Quality · Craft · Experience"],
         coffee: ["☕", "Coffee Knowledge", "Learn · Taste · Enjoy"]
       }[scene];
     }
 
+    function renderSceneArtwork(scene) {
+      const art = {
+        aroma: `<span class="art-cup"></span><span class="art-steam s1"></span><span class="art-steam s2"></span><span class="art-steam s3"></span>`,
+        brew: `<span class="art-dripper"></span><span class="art-drop"></span><span class="art-cup" style="transform:scale(.62);left:52px;bottom:18px"></span>`,
+        roast: `<span class="art-drum"></span><span class="art-flame f1"></span><span class="art-flame f2"></span><span class="art-flame f3"></span>`,
+        process: `<span class="art-jar"></span><span class="art-cherry" style="left:64px;top:77px"></span><span class="art-cherry" style="left:91px;top:93px;animation-delay:.6s"></span>`,
+        origin: `<span class="art-leaf" style="left:40px;top:55px"></span><span class="art-leaf" style="left:88px;top:88px;transform:rotate(145deg)"></span><span class="art-bean" style="left:74px;top:73px"></span>`,
+        greenbean: `<span class="art-leaf" style="left:35px;top:52px"></span><span class="art-leaf" style="left:89px;top:93px;transform:rotate(145deg)"></span><span class="art-bean" style="left:65px;top:69px;background:#b4ce75"></span><span class="art-bean" style="left:94px;top:88px;background:#d7df9a;animation-delay:.6s"></span>`,
+        specialty: `<span class="art-medal">★</span><span class="art-spark" style="left:28px;top:28px">✦</span><span class="art-spark" style="right:25px;top:58px;animation-delay:.7s">✧</span>`,
+        fruit: `<span class="art-cherry" style="left:50px;top:76px"></span><span class="art-cherry" style="left:78px;top:60px;animation-delay:.4s"></span><span class="art-cherry" style="left:104px;top:84px;animation-delay:.8s"></span><span class="art-leaf" style="left:68px;top:33px"></span>`,
+        coffee: `<span class="art-cup"></span><span class="art-steam s1"></span><span class="art-steam s2"></span><span class="art-steam s3"></span>`
+      };
+      return `<div class="scene-artwork">${art[scene] || art.coffee}</div>`;
+    }
+
     function renderTopicVisual(scene) {
-      const [icon, label, note] = getSceneMeta(scene);
+      const [, label, note] = getSceneMeta(scene);
       return `
         <div class="topic-visual" aria-hidden="true">
-          <div class="topic-orb">${icon}</div>
+          ${renderSceneArtwork(scene)}
           <div class="topic-copy">
             <p class="topic-label">${label}</p>
             <p class="topic-note">${note}</p>
@@ -679,6 +949,7 @@
 
       const sections = (slide.sections || []).map((section, index) => `
         <article class="section check-fit" data-step="${index + 1}">
+          <span class="mini-visual" aria-hidden="true">${getSceneMeta(scene)[0]}</span>
           <h2>${escapeHtml(section.heading)}</h2>
           <p>${lines(section.text)}</p>
         </article>`).join("");

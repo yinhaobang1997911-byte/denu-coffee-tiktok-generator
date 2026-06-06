@@ -95,6 +95,66 @@ function validateDailyData(data) {
   return issues;
 }
 
+function cleanText(value = "") {
+  return String(value).replace(/\s+/g, " ").trim();
+}
+
+function makeVideoScenes(data) {
+  const slides = Array.isArray(data.slides) ? data.slides : [];
+  const opening = slides[0] || {};
+  const detailSlides = slides.slice(1);
+  const lastSlide = slides[slides.length - 1] || {};
+  const sections = detailSlides
+    .flatMap((slide) => (slide.sections || []).map((section) => ({
+      title: section.heading || slide.title,
+      subtitle: section.text || slide.footer || "",
+      narration: section.narration || section.text || section.heading || "",
+      visual: `${slide.visual || ""} ${section.heading || ""} ${section.text || ""}`
+    })))
+    .filter((scene) => scene.title || scene.subtitle)
+    .slice(0, 5);
+
+  const pointDuration = sections.length > 3 ? 5 : 6;
+  const scenes = [
+    {
+      kind: "opening",
+      durationSeconds: 3,
+      title: opening.title || data.topic,
+      subtitle: opening.body || data.topic,
+      narration: opening.body || opening.title || data.topic,
+      visual: opening.visual || data.topic,
+      layout: "hero"
+    },
+    ...sections.map((section, index) => ({
+      kind: "point",
+      durationSeconds: pointDuration,
+      title: section.title,
+      subtitle: section.subtitle,
+      narration: section.narration,
+      visual: section.visual,
+      layout: ["focus", "diagram", "process", "compare", "checklist"][index % 5],
+      step: index + 1
+    })),
+    {
+      kind: "summary",
+      durationSeconds: sections.length > 3 ? 5 : 6,
+      title: lastSlide.title || data.topic,
+      subtitle: lastSlide.footer || data.caption,
+      narration: lastSlide.footer || data.caption || data.topic,
+      visual: lastSlide.visual || data.topic,
+      layout: "summary"
+    }
+  ];
+
+  return scenes.map((scene) => ({
+    ...scene,
+    title: cleanText(scene.title).slice(0, 120),
+    subtitle: cleanText(scene.subtitle).slice(0, 210),
+    narration: cleanText(scene.narration).slice(0, 160),
+    visual: cleanText(scene.visual)
+  }));
+}
+
 async function renderDailyData(data, publicBaseUrl) {
   await mkdir(dataDir, { recursive: true });
   await mkdir(outputDir, { recursive: true });
@@ -173,10 +233,10 @@ async function renderDailyVideo(data, publicBaseUrl) {
   await rm(frameDir, { recursive: true, force: true });
   await mkdir(frameDir, { recursive: true });
   data.design = normalizeDesign(data.design);
+  data.videoScenes = makeVideoScenes(data);
   await writeFile(dataFile, JSON.stringify(data, null, 2), "utf8");
 
-  const fps = 10;
-  const framesPerSlide = 30;
+  const fps = 5;
   const browser = await chromium.launch({
     headless: true,
     args: ["--font-render-hinting=medium"]
@@ -189,11 +249,13 @@ async function renderDailyVideo(data, publicBaseUrl) {
     });
 
     let frame = 0;
-    for (let slide = 0; slide < 3; slide += 1) {
-      const url = `http://127.0.0.1:${port}/index.html?data=data/${dataFileName}&slide=${slide}&export=1&video=1`;
+    for (let scene = 0; scene < data.videoScenes.length; scene += 1) {
+      const sceneData = data.videoScenes[scene];
+      const framesInScene = Math.max(12, Math.round(sceneData.durationSeconds * fps));
+      const url = `http://127.0.0.1:${port}/index.html?data=data/${dataFileName}&videoScene=${scene}&export=1&video=1`;
       await page.goto(url, { waitUntil: "networkidle" });
       await page.waitForFunction(() => window.__DENUCHECK__ !== undefined);
-      for (let index = 0; index < framesPerSlide; index += 1) {
+      for (let index = 0; index < framesInScene; index += 1) {
         const fileName = `frame-${String(frame).padStart(4, "0")}.png`;
         await page.screenshot({
           path: path.join(frameDir, fileName),
@@ -221,23 +283,25 @@ async function renderDailyVideo(data, publicBaseUrl) {
   ]);
   await rm(frameDir, { recursive: true, force: true });
   const buffer = await readFile(videoFile);
+  const durationSeconds = data.videoScenes.reduce((total, scene) => total + scene.durationSeconds, 0);
 
   return {
     ok: true,
     day,
     caption: data.caption,
+    videoScenes: data.videoScenes,
     video: {
       fileName: videoFileName,
       mimeType: "video/mp4",
-      durationSeconds: 9,
-      url: `${publicBaseUrl}/output/day-${day}/${videoFileName}?v=${renderVersion}`,
-      base64: buffer.toString("base64")
+      durationSeconds,
+      sizeBytes: buffer.length,
+      url: `${publicBaseUrl}/output/day-${day}/${videoFileName}?v=${renderVersion}`
     }
   };
 }
 
 app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "denu-coffee-render-api" });
+  res.json({ ok: true, service: "denu-coffee-render-api", video: true });
 });
 
 app.post("/render", async (req, res) => {
@@ -301,6 +365,10 @@ app.post("/video", async (req, res) => {
       error: error instanceof Error ? error.message : String(error)
     });
   }
+});
+
+app.get("/video", (_req, res) => {
+  res.status(405).json({ ok: false, error: "Use POST /video to render an MP4." });
 });
 
 app.post("/rerender-video", async (req, res) => {
